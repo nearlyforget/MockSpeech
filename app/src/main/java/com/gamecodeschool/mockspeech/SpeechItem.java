@@ -2,8 +2,6 @@ package com.gamecodeschool.mockspeech;
 
 import android.net.Uri;
 
-import java.sql.Date;
-
 /**
  * Created by nan.liu on 2017/07/06.
  */
@@ -11,12 +9,32 @@ import java.sql.Date;
 public class SpeechItem {
 
     private String speechName;
-    private Date speechDate;
+    private String speechDate;
     private String speechPlace;
     private Uri speechUri;
-    private String speechCategory;
-    private String speecher;
+    private int speechCategory;
+    private int speecher;
     private String speech;
+    private String translation;
+
+    public SpeechItem(String speechName, String speechDate, String speechPlace, Uri speechUri, int speechCategory, int speecher, String speech, String translation) {
+        this.speechName = speechName;
+        this.speechDate = speechDate;
+        this.speechPlace = speechPlace;
+        this.speechUri = speechUri;
+        this.speechCategory = speechCategory;
+        this.speecher = speecher;
+        this.speech = speech;
+        this.translation = translation;
+    }
+
+    public String getTranslation() {
+        return translation;
+    }
+
+    public void setTranslation(String translation) {
+        this.translation = translation;
+    }
 
     public String getSpeech() {
         return speech;
@@ -24,15 +42,6 @@ public class SpeechItem {
 
     public void setSpeech(String speech) {
         this.speech = speech;
-    }
-
-    public SpeechItem(String speechName, Date speechDate, String speechPlace, Uri speechUri, String speechCategory, String speecher) {
-        this.speechName = speechName;
-        this.speechDate = speechDate;
-        this.speechPlace = speechPlace;
-        this.speechUri = speechUri;
-        this.speechCategory = speechCategory;
-        this.speecher = speecher;
     }
 
     public String getSpeechName() {
@@ -43,11 +52,11 @@ public class SpeechItem {
         this.speechName = speechName;
     }
 
-    public Date getSpeechDate() {
+    public String getSpeechDate() {
         return speechDate;
     }
 
-    public void setSpeechDate(Date speechDate) {
+    public void setSpeechDate(String speechDate) {
         this.speechDate = speechDate;
     }
 
@@ -67,19 +76,19 @@ public class SpeechItem {
         this.speechUri = speechUri;
     }
 
-    public String getSpeechCategory() {
+    public int getSpeechCategory() {
         return speechCategory;
     }
 
-    public void setSpeechCategory(String speechCategory) {
+    public void setSpeechCategory(int speechCategory) {
         this.speechCategory = speechCategory;
     }
 
-    public String getSpeecher() {
+    public int getSpeecher() {
         return speecher;
     }
 
-    public void setSpeecher(String speecher) {
+    public void setSpeecher(int speecher) {
         this.speecher = speecher;
     }
 }
