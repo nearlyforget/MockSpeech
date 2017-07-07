@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_english"
+        android:icon="@drawable/united_states_of_america_round_icon_64"
+        android:title="@string/nav_english" />
+
+    <item
+        android:id="@+id/navigation_japanese"
+        android:icon="@drawable/japan_round_icon_64"
+        android:title="@string/nav_japanese" />
+
+    <item
+        android:id="@+id/navigation_voc"
+        android:icon="@drawable/voc"
+        android:title="@string/nav_vocabulary" />
+
+</menu>

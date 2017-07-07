@@ -17,7 +17,15 @@
             </intent-filter>
         </activity>
         <activity android:name=".SettingsActivity" />
-        <activity android:name=".SpeechActivity"></activity>
+        <activity android:name=".SpeechActivity" />
+        <activity
+            android:name=".SpeechContent"
+            android:label="@string/title_activity_speech_content"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.gamecodeschool.mockspeech.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

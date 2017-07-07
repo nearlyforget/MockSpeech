@@ -11,7 +11,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DBHelper extends SQLiteOpenHelper {
 
     //Database name and version
-    private static final String DATABASE_NAME = "mydbnamedb";
+    private static final String DATABASE_NAME = "speechDB";
     private static final int DATABASE_VERSION = 1;
 
     // Each table's name

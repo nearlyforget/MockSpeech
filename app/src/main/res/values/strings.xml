@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">MockSpeech</string>
+    <string name="title_activity_speech_content">SpeechContent</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="nav_english">English</string>
+    <string name="nav_japanese">Japanese</string>
+    <string name="nav_vocabulary">Vocabulary</string>
+    <string name="title_myspeech">My Speech</string>
+    <string name="setting_vocalspeed">Slow vocal speed</string>
+    <string name="setting_textsize">Text size</string>
+    <string name="setting_repeat">Repeat single speech</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>
