@@ -1,23 +1,26 @@
 package com.gamecodeschool.mockspeech;
 
-import android.net.Uri;
-
 /**
  * Created by nan.liu on 2017/07/06.
  */
 
 public class SpeechItem {
 
+    private int speechId;
     private String speechName;
     private String speechDate;
     private String speechPlace;
-    private Uri speechUri;
+    private String speechUri;
     private int speechCategory;
     private int speecher;
     private String speech;
     private String translation;
 
-    public SpeechItem(String speechName, String speechDate, String speechPlace, Uri speechUri, int speechCategory, int speecher, String speech, String translation) {
+    public SpeechItem() {
+
+    }
+
+    public SpeechItem(String speechName, String speechDate, String speechPlace, String speechUri, int speechCategory, int speecher, String speech, String translation) {
         this.speechName = speechName;
         this.speechDate = speechDate;
         this.speechPlace = speechPlace;
@@ -26,6 +29,14 @@ public class SpeechItem {
         this.speecher = speecher;
         this.speech = speech;
         this.translation = translation;
+    }
+
+    public int getSpeechId() {
+        return speechId;
+    }
+
+    public void setSpeechId(int speechId) {
+        this.speechId = speechId;
     }
 
     public String getTranslation() {
@@ -68,11 +79,11 @@ public class SpeechItem {
         this.speechPlace = speechPlace;
     }
 
-    public Uri getSpeechUri() {
+    public String getSpeechUri() {
         return speechUri;
     }
 
-    public void setSpeechUri(Uri speechUri) {
+    public void setSpeechUri(String speechUri) {
         this.speechUri = speechUri;
     }
 

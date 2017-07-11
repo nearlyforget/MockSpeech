@@ -1,27 +1,37 @@
 package com.gamecodeschool.mockspeech;
 
-import android.net.Uri;
-
 /**
  * Created by nan.liu on 2017/07/06.
  */
 
 public class Speecher {
-
+    private int speecherId;
     private String speecherName;
     private String speecherBirthday;
     private String speecharDisc;
     private String speecherCountry;
     private String speecherSocial;
-    private Uri speecher_photo;
+    private String speecher_photo;
 
-    public Speecher(String speecherName, String speecherBirthday, String speecharDisc, String speecherCountry, String speecherSocial, Uri speecher_photo) {
+    public Speecher() {
+
+    }
+
+    public Speecher(String speecherName, String speecherBirthday, String speecharDisc, String speecherCountry, String speecherSocial, String speecher_photo) {
         this.speecherName = speecherName;
         this.speecherBirthday = speecherBirthday;
         this.speecharDisc = speecharDisc;
         this.speecherCountry = speecherCountry;
         this.speecherSocial = speecherSocial;
         this.speecher_photo = speecher_photo;
+    }
+
+    public int getSpeecherId() {
+        return speecherId;
+    }
+
+    public void setSpeecherId(int speecherId) {
+        this.speecherId = speecherId;
     }
 
     public String getSpeecherName() {
@@ -64,11 +74,11 @@ public class Speecher {
         this.speecherSocial = speecherSocial;
     }
 
-    public Uri getSpeecher_photo() {
+    public String getSpeecher_photo() {
         return speecher_photo;
     }
 
-    public void setSpeecher_photo(Uri speecher_photo) {
+    public void setSpeecher_photo(String speecher_photo) {
         this.speecher_photo = speecher_photo;
     }
 }
