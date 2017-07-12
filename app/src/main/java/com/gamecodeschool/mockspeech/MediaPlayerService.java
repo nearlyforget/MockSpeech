@@ -1,12 +1,18 @@
 package com.gamecodeschool.mockspeech;
 
 import android.app.Service;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.res.AssetFileDescriptor;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.os.Binder;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.telephony.PhoneStateListener;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 
 import java.io.IOException;
@@ -26,8 +32,17 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
     private String mediaFile;
     //Used to pause/resume MediaPlayer
     private int resumePosition;
+    //Asset descriptor
+    private AssetFileDescriptor descriptor;
     //Handle audio focus
     private AudioManager audioManager;
+
+    //Handle incoming phone calls
+    private boolean ongoingCall = false;
+    private PhoneStateListener phoneStateListener;
+    private TelephonyManager telephonyManager;
+
+    private final IBinder iBinder = new LocalBinder();
 
     private void initMediaPlayer() {
         mediaPlayer = new MediaPlayer();
@@ -44,7 +59,8 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         try {
             // Set the data source to the mediaFile location
-            mediaPlayer.setDataSource(mediaFile);
+            descriptor = getAssets().openFd(mediaFile);
+            mediaPlayer.setDataSource(descriptor.getFileDescriptor(), descriptor.getStartOffset(), descriptor.getLength());
         } catch (IOException e) {
             e.printStackTrace();
             stopSelf();
@@ -163,6 +179,16 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
         removeAudioFocus();
     }
 
+    /**
+     * Service Binder
+     */
+    public class LocalBinder extends Binder {
+        public MediaPlayerService getService() {
+            // Return this instance of LocalService so clients can call public methods
+            return MediaPlayerService.this;
+        }
+    }
+
     @Override
     public void onAudioFocusChange(int focusState) {
         //Invoked when the audio focus of the system is updated.
@@ -207,5 +233,57 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
     private boolean removeAudioFocus() {
         return AudioManager.AUDIOFOCUS_REQUEST_GRANTED ==
                 audioManager.abandonAudioFocus(this);
+    }
+
+    //Becoming noisy
+    private BroadcastReceiver becomingNoisyReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            //pause audio on ACTION_AUDIO_BECOMING_NOISY
+            pauseMedia();
+            buildNotification(PlaybackStatus.PAUSED);
+        }
+    };
+
+    private void registerBecomingNoisyReceiver() {
+        //register after getting audio focus
+        IntentFilter intentFilter = new IntentFilter(AudioManager.ACTION_AUDIO_BECOMING_NOISY);
+        registerReceiver(becomingNoisyReceiver, intentFilter);
+    }
+
+    //Handle incoming phone calls
+    private void callStateListener() {
+        // Get the telephony manager
+        telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+        //Starting listening for PhoneState changes
+        phoneStateListener = new PhoneStateListener() {
+            @Override
+            public void onCallStateChanged(int state, String incomingNumber) {
+                switch (state) {
+                    //if at least one call exists or the phone is ringing
+                    //pause the MediaPlayer
+                    case TelephonyManager.CALL_STATE_OFFHOOK:
+                    case TelephonyManager.CALL_STATE_RINGING:
+                        if (mediaPlayer != null) {
+                            pauseMedia();
+                            ongoingCall = true;
+                        }
+                        break;
+                    case TelephonyManager.CALL_STATE_IDLE:
+                        // Phone idle. Start playing.
+                        if (mediaPlayer != null) {
+                            if (ongoingCall) {
+                                ongoingCall = false;
+                                resumeMedia();
+                            }
+                        }
+                        break;
+                }
+            }
+        };
+        // Register the listener with the telephony manager
+        // Listen for changes to the device call state.
+        telephonyManager.listen(phoneStateListener,
+                PhoneStateListener.LISTEN_CALL_STATE);
     }
 }

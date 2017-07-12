@@ -22,6 +22,7 @@ public class SpeechDAO extends DataBaseHelper {
     SpeechItem item;
     Speecher speecher;
 
+
     public SpeechDAO(Context context) {
         super(context);
         this.mContext = context;
