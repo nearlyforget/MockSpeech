@@ -5,6 +5,20 @@
     tools:context="com.gamecodeschool.mockspeech.SpeechFragment">
 
     <!-- TODO: Update blank fragment layout -->
+    <LinearLayout
+        android:id="@+id/speech_control"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></LinearLayout>
 
+    <ScrollView
+        android:id="@+id/speech_scroll"
+        android:layout_width="match_parent"
+        android:layout_height="504dp"
+        android:layout_gravity="bottom">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+    </ScrollView>
 </FrameLayout>
