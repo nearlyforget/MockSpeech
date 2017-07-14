@@ -1,16 +1,17 @@
 package com.gamecodeschool.mockspeech;
 
-/**
- * Created by nan.liu on 2017/07/06.
- */
 
-public class Words {
+class Words {
 
     private String words;
     private String type;
     private String ipa;
     private String mean;
     private int speech;
+
+    public Words() {
+
+    }
 
     public Words(String words, String type, String ipa, String mean, int speech) {
         this.words = words;
@@ -20,7 +21,7 @@ public class Words {
         this.speech = speech;
     }
 
-    public String getWords() {
+    String getWords() {
         return words;
     }
 
@@ -28,7 +29,7 @@ public class Words {
         this.words = words;
     }
 
-    public String getType() {
+    String getType() {
         return type;
     }
 
@@ -36,7 +37,7 @@ public class Words {
         this.type = type;
     }
 
-    public String getIpa() {
+    String getIpa() {
         return ipa;
     }
 
@@ -44,7 +45,7 @@ public class Words {
         this.ipa = ipa;
     }
 
-    public String getMean() {
+    String getMean() {
         return mean;
     }
 

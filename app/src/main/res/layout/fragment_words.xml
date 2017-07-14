@@ -5,9 +5,13 @@
     tools:context="com.gamecodeschool.mockspeech.WordsFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <fragment
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:id="@id/list"
+        android:name="com.gamecodeschool.mockspeech.ItemFragment"
+        tools:layout="@layout/fragment_item_list">
+
+    </fragment>
 
 </FrameLayout>
