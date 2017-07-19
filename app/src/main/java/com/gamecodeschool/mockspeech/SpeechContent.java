@@ -14,11 +14,17 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class SpeechContent extends AppCompatActivity {
+public class SpeechContent extends AppCompatActivity implements MediaPlayerInterface {
 
     private TextView mTextMessage;
     private MediaPlayerService player;
     boolean serviceBound = false;
+    private int speechID;
+    private int speecherId;
+    private Intent intent;
+    public static final String Broadcast_PAUSE_AUDIO = "com.gamecodeschool.mockspeech.mediaplayer.PauseAudio";
+    public static final String Broadcast_RESUME_AUDIO = "com.gamecodeschool.mockspeech.mediaplayer.ResumeAudio";
+    Bundle bundle;
 
     SpeechItem speech;
     SpeechDAO dao;
@@ -62,7 +68,7 @@ public class SpeechContent extends AppCompatActivity {
         }
     };
 
-    private void playAudio(String media) {
+    public void playAudio(String media) {
         //Check is service is active
         if (!serviceBound) {
             Intent playerIntent = new Intent(this, MediaPlayerService.class);
@@ -71,7 +77,19 @@ public class SpeechContent extends AppCompatActivity {
             bindService(playerIntent, serviceConnection, Context.BIND_AUTO_CREATE);
         } else {
             //Service is active
-            //Send media with BroadcastReceiver
+            //Send media resume BroadcastReceiver
+            Intent broadcastIntent = new Intent(Broadcast_RESUME_AUDIO);
+            sendBroadcast(broadcastIntent);
+        }
+    }
+
+    @Override
+    public void pauseAudio(String media) {
+        if (serviceBound) {
+            Intent broadcastIntent = new Intent(Broadcast_PAUSE_AUDIO);
+            sendBroadcast(broadcastIntent);
+        } else {
+
         }
     }
 
@@ -83,11 +101,18 @@ public class SpeechContent extends AppCompatActivity {
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
+        intent = getIntent();
+        speechID = intent.getIntExtra("speechId", 0);
+        speecherId = intent.getIntExtra("speecherId", 0);
         //Load the speech content with specific speechID
-        loadSpeech(savedInstanceState.getInt("speechID"));
+        loadSpeech(speechID);
+        bundle = new Bundle();
+        bundle.putInt("speechId", speechID);
+        bundle.putInt("speecherId", speecherId);
     }
 
     public void switchToFragment(android.support.v4.app.Fragment fragment) {
+        fragment.setArguments(bundle);
         FragmentManager manager = getSupportFragmentManager();
         manager.beginTransaction().replace(R.id.content, fragment).commit();
     }

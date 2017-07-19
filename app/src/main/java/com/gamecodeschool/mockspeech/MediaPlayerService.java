@@ -79,6 +79,8 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
         callStateListener();
         //ACTION_AUDIO_BECOMING_NOISY -- change in audio outputs -- BroadcastReceiver
         registerBecomingNoisyReceiver();
+        registerPauseAudioReceiver();
+        registerResumeAudioReceiver();
     }
 
     private void playMedia() {
@@ -268,6 +270,32 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
         //register after getting audio focus
         IntentFilter intentFilter = new IntentFilter(AudioManager.ACTION_AUDIO_BECOMING_NOISY);
         registerReceiver(becomingNoisyReceiver, intentFilter);
+    }
+
+    private BroadcastReceiver resumeAudio = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            resumeMedia();
+        }
+    };
+
+    private void registerResumeAudioReceiver() {
+        //register after getting audio focus
+        IntentFilter intentFilter = new IntentFilter(SpeechContent.Broadcast_RESUME_AUDIO);
+        registerReceiver(resumeAudio, intentFilter);
+    }
+
+    private BroadcastReceiver pauseAudio = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            pauseMedia();
+        }
+    };
+
+    private void registerPauseAudioReceiver() {
+        //register after getting audio focus
+        IntentFilter intentFilter = new IntentFilter(SpeechContent.Broadcast_PAUSE_AUDIO);
+        registerReceiver(pauseAudio, intentFilter);
     }
 
     //Handle incoming phone calls

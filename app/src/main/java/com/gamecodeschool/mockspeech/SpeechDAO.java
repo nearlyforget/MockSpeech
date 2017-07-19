@@ -17,6 +17,7 @@ public class SpeechDAO extends DataBaseHelper {
 
     protected static final String TAG = "DataAdapter";
     private ArrayList<SpeechItem> speechItem;
+    private ArrayList<ArrayList<SpeechItem>> groupList;
     private final Context mContext;
     private SQLiteDatabase mDb;
     SpeechItem item;
@@ -97,6 +98,36 @@ public class SpeechDAO extends DataBaseHelper {
                 speechItem.add(item);
             }
             return speechItem;
+        } catch (SQLException mSQLException) {
+            Log.e(TAG, "getTestData >>" + mSQLException.toString());
+            throw mSQLException;
+        }
+    }
+
+    public ArrayList<ArrayList<SpeechItem>> getSpeechGroupList() {
+        String sql = "SELECT * FROM tbl_speech";
+        int i = 1;
+        try {
+
+            Cursor mCur = mDb.rawQuery(sql, null);
+            for (mCur.moveToFirst(); mCur.isAfterLast(); mCur.moveToNext()) {
+                SpeechItem item = new SpeechItem();
+                ArrayList<SpeechItem> groupSpeechItem = new ArrayList<>();
+                item.setSpeechId(mCur.getInt(0));
+                item.setSpeechDate(mCur.getColumnName(2));
+                item.setSpeecher(mCur.getInt(7));
+                item.setSpeechName(mCur.getColumnName(1));
+                item.setSpeechPlace(mCur.getString(3));
+                if (i <= 3) {
+                    groupSpeechItem.add(item);
+                    i++;
+                } else {
+                    i = 1;
+                    groupList.add(groupSpeechItem);
+                }
+
+            }
+            return groupList;
         } catch (SQLException mSQLException) {
             Log.e(TAG, "getTestData >>" + mSQLException.toString());
             throw mSQLException;
