@@ -20,9 +20,9 @@ public class SpeechDAO extends DataBaseHelper {
     private ArrayList<ArrayList<SpeechItem>> groupList;
     private final Context mContext;
     private SQLiteDatabase mDb;
-    SpeechItem item;
-    Speecher speecher;
-
+    private SpeechItem item;
+    private Speecher speecher;
+    private ArrayList<Words> wordsList;
 
     public SpeechDAO(Context context) {
         super(context);
@@ -197,5 +197,38 @@ public class SpeechDAO extends DataBaseHelper {
             throw mSQLException;
         }
     }
+
+    public ArrayList<Words> getWordsById(int speechId) {
+        String sql;
+        if (speechId == 0) {
+            sql = "SELECT * FROM tbl_speecher";
+        } else {
+            sql = "SELECT * FROM tbl_words where speech_id =" + speechId;
+        }
+
+        try {
+
+            Cursor mCur = mDb.rawQuery(sql, null);
+            for (mCur.moveToFirst(); mCur.isAfterLast(); mCur.moveToNext()) {
+                if (mCur != null) {
+                    mCur.moveToNext();
+                    Words words = new Words();
+                    words.setWords(mCur.getColumnName(1));
+                    words.setType(mCur.getColumnName(2));
+                    words.setIpa(mCur.getColumnName(3));
+                    words.setMean(mCur.getColumnName(4));
+                    words.setId(mCur.getInt(0));
+                    wordsList.add(words);
+                } else {
+                    return null;
+                }
+            }
+            return wordsList;
+        } catch (SQLException mSQLException) {
+            Log.e(TAG, "getTestData >>" + mSQLException.toString());
+            throw mSQLException;
+        }
+    }
+
 
 }

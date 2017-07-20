@@ -22,11 +22,10 @@ import android.widget.TextView;
 public class SpeechFragment extends Fragment {
 
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_SPEECH_ID = "speechId";
-    private static final String ARG_SPEECHER_ID = "speecherId";
-    private int speechId;
-    private int speecherId;
-    private SpeechDAO speechDAO;
+    private static final String ARG_SPEECH_ID = "speech";
+    private static final String ARG_SPEECHER_ID = "speecher";
+    private SpeechItem speech;
+    private Speecher speecher;
     private MediaPlayerInterface parrent;
 
 
@@ -48,10 +47,8 @@ public class SpeechFragment extends Fragment {
 
         // get 2 arguments
         if (getArguments() != null) {
-            speechId = getArguments().getInt(ARG_SPEECH_ID);
-            speecherId = getArguments().getInt(ARG_SPEECHER_ID);
-            speechDAO = new SpeechDAO(getContext());
-
+            speech = (SpeechItem) getArguments().getSerializable(ARG_SPEECH_ID);
+            speecher = (Speecher) getArguments().getSerializable(ARG_SPEECHER_ID);
         }
 
     }
@@ -70,17 +67,11 @@ public class SpeechFragment extends Fragment {
         ImageView playImage = (ImageView) speechView.findViewById(R.id.image_playbutton);
         final ImageView pauseImage = (ImageView) speechView.findViewById(R.id.image_pausebutton);
 
-        //Pull speech using Dao class
-
-        speechDAO = new SpeechDAO(getContext());
-        final SpeechItem item = speechDAO.getSpeechById(speechId);
-        Speecher speecher = speechDAO.getSpeecherById(item.getSpeechId());
-
         //Set speech content to each view.
-        speechTitle.setText(item.getSpeechName());
-        speechDate.setText(item.getSpeechDate());
-        speechPlace.setText(item.getSpeechPlace());
-        speechText.setText(item.getSpeech());
+        speechTitle.setText(speech.getSpeechName());
+        speechDate.setText(speech.getSpeechDate());
+        speechPlace.setText(speech.getSpeechPlace());
+        speechText.setText(speech.getSpeech());
 
         //Get the parrent Activity
         parrent = (MediaPlayerInterface) parrent;
@@ -90,7 +81,7 @@ public class SpeechFragment extends Fragment {
         playImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                parrent.playAudio(item.getSpeechUri());
+                parrent.playAudio(speech.getSpeechUri());
             }
         });
 
@@ -98,7 +89,7 @@ public class SpeechFragment extends Fragment {
         pauseImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                parrent.pauseAudio(item.getSpeechUri());
+                parrent.pauseAudio(speech.getSpeechUri());
             }
         });
 

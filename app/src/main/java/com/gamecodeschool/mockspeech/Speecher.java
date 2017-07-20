@@ -1,10 +1,12 @@
 package com.gamecodeschool.mockspeech;
 
+import java.io.Serializable;
+
 /**
  * Created by nan.liu on 2017/07/06.
  */
 
-public class Speecher {
+public class Speecher implements Serializable {
     private int speecherId;
     private String speecherName;
     private String speecherBirthday;

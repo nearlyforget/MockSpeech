@@ -14,6 +14,8 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 public class SpeechContent extends AppCompatActivity implements MediaPlayerInterface {
 
     private TextView mTextMessage;
@@ -27,6 +29,8 @@ public class SpeechContent extends AppCompatActivity implements MediaPlayerInter
     Bundle bundle;
 
     SpeechItem speech;
+    Speecher speecher;
+    ArrayList<Words> words;
     SpeechDAO dao;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -107,8 +111,9 @@ public class SpeechContent extends AppCompatActivity implements MediaPlayerInter
         //Load the speech content with specific speechID
         loadSpeech(speechID);
         bundle = new Bundle();
-        bundle.putInt("speechId", speechID);
-        bundle.putInt("speecherId", speecherId);
+        bundle.putSerializable("speech", speech);
+        bundle.putSerializable("speecher", speecher);
+        bundle.putParcelableArrayList("words", words);
     }
 
     public void switchToFragment(android.support.v4.app.Fragment fragment) {
@@ -135,6 +140,9 @@ public class SpeechContent extends AppCompatActivity implements MediaPlayerInter
         dao.createDatabase();
         dao.open();
         speech = dao.getSpeechById(speechId);
+        speecher = dao.getSpeecherById(speech.getSpeechId());
+        words = dao.getWordsById(speech.getSpeechId());
+
         if (speech != null) {
             Toast.makeText(this, "Speech loaded!", Toast.LENGTH_SHORT);
         } else {

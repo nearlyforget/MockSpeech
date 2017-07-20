@@ -1,10 +1,12 @@
 package com.gamecodeschool.mockspeech;
 
+import java.io.Serializable;
+
 /**
  * Created by nan.liu on 2017/07/06.
  */
 
-public class SpeechItem {
+public class SpeechItem implements Serializable {
 
     private int speechId;
     private String speechName;
