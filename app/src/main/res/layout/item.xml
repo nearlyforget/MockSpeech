@@ -8,8 +8,7 @@
         android:id="@+id/icon"
         android:layout_width="80dip"
         android:layout_height="100dip"
-        android:paddingLeft="10dip"
-        android:src="@drawable/book" />
+        android:paddingLeft="10dip" />
 
     <TextView
         android:id="@+id/title"

@@ -12,21 +12,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-/**
- * Created by nan.liu on 2017/07/06.
- */
-
 public class DataBaseHelper extends SQLiteOpenHelper {
     private static String TAG = "DataBaseHelper"; // Tag just for the LogCat window
     //destination path (location) of our database on device
     private static String DB_PATH = "";
-    private static String DB_NAME = "speechDB";// Database name
+    private static String DB_NAME = "speechDB.db";// Database name
     private SQLiteDatabase mDataBase;
     private final Context mContext;
 
     public DataBaseHelper(Context context) {
         super(context, DB_NAME, null, 1);// 1? Its database Version
-        if (android.os.Build.VERSION.SDK_INT >= 17) {
+        if (android.os.Build.VERSION.SDK_INT <= 17) {
             DB_PATH = context.getApplicationInfo().dataDir + "/databases/";
         } else {
             DB_PATH = "/data/data/" + context.getPackageName() + "/databases/";
@@ -40,7 +36,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         boolean mDataBaseExist = checkDataBase();
         if (!mDataBaseExist) {
             this.getReadableDatabase();
-            this.close();
             try {
                 //Copy the database from assests
                 copyDataBase();
@@ -50,7 +45,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             }
         }
     }
-
     //Check that the database exists here: /data/data/your package/databases/Da Name
     private boolean checkDataBase() {
         File dbFile = new File(DB_PATH + DB_NAME);

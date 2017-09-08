@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -27,6 +26,7 @@ public class SpeechContent extends AppCompatActivity implements MediaPlayerInter
     public static final String Broadcast_PAUSE_AUDIO = "com.gamecodeschool.mockspeech.mediaplayer.PauseAudio";
     public static final String Broadcast_RESUME_AUDIO = "com.gamecodeschool.mockspeech.mediaplayer.ResumeAudio";
     Bundle bundle;
+    android.support.v4.app.FragmentTransaction ft;
 
     SpeechItem speech;
     Speecher speecher;
@@ -114,12 +114,20 @@ public class SpeechContent extends AppCompatActivity implements MediaPlayerInter
         bundle.putSerializable("speech", speech);
         bundle.putSerializable("speecher", speecher);
         bundle.putParcelableArrayList("words", words);
+
+        if (savedInstanceState == null) {
+            SpeechFragment newFragment = new SpeechFragment();
+            newFragment.setArguments(bundle);
+            ft = getSupportFragmentManager().beginTransaction();
+            ft.add(R.id.content, newFragment).commit();
+        }
     }
 
     public void switchToFragment(android.support.v4.app.Fragment fragment) {
         fragment.setArguments(bundle);
-        FragmentManager manager = getSupportFragmentManager();
-        manager.beginTransaction().replace(R.id.content, fragment).commit();
+        ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.content, fragment).commit();
+
     }
 
 
@@ -140,8 +148,8 @@ public class SpeechContent extends AppCompatActivity implements MediaPlayerInter
         dao.createDatabase();
         dao.open();
         speech = dao.getSpeechById(speechId);
-        speecher = dao.getSpeecherById(speech.getSpeechId());
-        words = dao.getWordsById(speech.getSpeechId());
+        speecher = dao.getSpeecherById(speechId);
+        words = dao.getWordsById(speechId);
 
         if (speech != null) {
             Toast.makeText(this, "Speech loaded!", Toast.LENGTH_SHORT);

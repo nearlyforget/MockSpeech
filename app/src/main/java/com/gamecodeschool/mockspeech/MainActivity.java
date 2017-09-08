@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -29,6 +30,8 @@ public class MainActivity extends ListActivity {
 		 *  groupbyArrayBookItem return back array of array of items
 		 */
         speechDAO = new SpeechDAO(getApplicationContext());
+        speechDAO.createDatabase();
+        speechDAO.open();
 
         groupList = speechDAO.getSpeechGroupList();
 
@@ -114,9 +117,11 @@ public class MainActivity extends ListActivity {
             TextView topText = (TextView) retval.findViewById(R.id.title);
             TextView bottomText = (TextView) retval
                     .findViewById(R.id.author);
+            ImageView image = (ImageView) retval.findViewById(R.id.icon);
 
-            topText.setText(speechDAO.getSpeecherById(getItem(position).getSpeecher()).getSpeecherName());
-            bottomText.setText(getItem(position).getSpeechName());
+            image.setImageResource(R.drawable.bernanke);
+            topText.setText(getItem(position).getSpeechName());
+            bottomText.setText(speechDAO.getSpeecherById(getItem(position).getSpeecher()).getSpeecherName());
 
             return retval;
         }
